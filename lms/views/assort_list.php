@@ -25,22 +25,19 @@ include('header.php');
                     </button>
                 </div>
                 <div style="margin-top:30px">
-                    <table class="layui-table" lay-filter="test"
-                        lay-data="{url:'./assort_get.php', page: true, limit: 6, limits:[6]}"
-                        id="ID-table-demo-theads-1">
+                    <table class="layui-table" lay-filter="test" lay-data="{url:'./assort_get.php', page: true, limit: 6, limits:[6]}" id="ID-table-demo-theads-1">
                         <thead>
                             <tr>
                                 <th lay-data="{checkbox:true}" rowspan="2"></th>
                                 <th lay-data="{field:'assort_name', width:180}" rowspan="2">分类名称</th>
                                 <th lay-data="{align:'center'}" rowspan="2">分类说明</th>
-                                <th lay-data="{fixed: 'right', width: 160, align: 'center', toolbar: '#templet-demo-theads-tool'}"
-                                    rowspan="2">操作</th>
+                                <th lay-data="{fixed: 'right', width: 160, align: 'center', toolbar: '#templet-demo-theads-tool'}" rowspan="2">操作</th>
                             </tr>
                             <script type="text/html" id="templet-demo-theads-tool">
-                            <div class="layui-clear-space">
-                                <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-                                <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</a>
-                            </div>
+                                <div class="layui-clear-space">
+                                    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+                                    <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</a>
+                                </div>
                             </script>
                         </thead>
                     </table>
@@ -57,18 +54,18 @@ include('header.php');
 include('footer.php');
 ?>
 <script>
-function layerAlert(layer, util, form, title = "新增分类", url = 'assort_save.php', data = {
-    assort_name: '',
-    other: ''
-}) {
-    // 封装弹框
-    layer.open({
-        type: 1,
-        area: '350px',
-        resize: false,
-        shadeClose: true,
-        title,
-        content: `
+    function layerAlert(layer, util, form, title = "新增分类", url = 'assort_save.php', data = {
+        assort_name: '',
+        other: ''
+    }) {
+        // 封装弹框
+        layer.open({
+            type: 1,
+            area: '350px',
+            resize: false,
+            shadeClose: true,
+            title,
+            content: `
                         <form class="layui-form" >
                             <div class="layui-form" lay-filter="filter-test-layer" style="margin: 16px;">
                                 <div class="demo-login-container">
@@ -100,80 +97,106 @@ function layerAlert(layer, util, form, title = "新增分类", url = 'assort_sav
                             </div>
                         </form>
                     `,
-        success: function() {
-            // 对弹层中的表单进行初始化渲染
-            form.render();
-            // 表单提交事件
-            form.on('submit(submit_btn)', function(data) {
-                var field = data.field; // 获取表单字段值
-                // 此处可执行 Ajax 等操作
-                // …
-                if (title == '新增分类') {
-                    delete field['id'];
-                }
-                $.ajax({
-                    headers: {
-                        Accept: "application/json; charset=utf-8"
-                    },
-                    url,
-                    method: 'post',
-                    data: field,
-                    success: (res) => {
-                        let data = JSON.parse(res);
-                        layer.alert(data.msg, {
-                            title: "提示"
-                        });
-                        if (data.flag === 0) {
-                            setTimeout(() => {
-                                window.location
-                                    .reload();
-                            }, 1000);
-                        }
-                    },
-                    error: (e) => {
-                        console.log('e', e)
+            success: function() {
+                // 对弹层中的表单进行初始化渲染
+                form.render();
+                // 表单提交事件
+                form.on('submit(submit_btn)', function(data) {
+                    var field = data.field; // 获取表单字段值
+                    // 此处可执行 Ajax 等操作
+                    // …
+                    if (title == '新增分类') {
+                        delete field['id'];
                     }
+                    $.ajax({
+                        headers: {
+                            Accept: "application/json; charset=utf-8"
+                        },
+                        url,
+                        method: 'post',
+                        data: field,
+                        success: (res) => {
+                            let data = JSON.parse(res);
+                            layer.alert(data.msg, {
+                                title: "提示"
+                            });
+                            if (data.flag === 0) {
+                                setTimeout(() => {
+                                    window.location
+                                        .reload();
+                                }, 1000);
+                            }
+                        },
+                        error: (e) => {
+                            console.log('e', e)
+                        }
+                    })
+                    return false; // 阻止默认 form 跳转
+                });
+            }
+        });
+    }
+
+    layui.use(function() {
+        var $ = layui.$;
+        var layer = layui.layer;
+        var util = layui.util;
+        var form = layui.form;
+        // 事件
+        util.on('lay-on', {
+            'test-page-custom': function() {
+                layerAlert(layer, util, form)
+            }
+        });
+    });
+
+    layui.use('table', function() {
+        var $ = layui.$;
+        var layer = layui.layer;
+        var util = layui.util;
+        var form = layui.form;
+        var table = layui.table;
+        table.on('tool(test)', function(obj) {
+            var tr = obj.data;
+            let arr = Object.values(tr);
+            var eventName = obj.event;
+            if (eventName == 'del') {
+                //删除
+                layer.confirm("您确认删除吗？", function(index) {
+
+
+                    $.ajax({
+                        headers: {
+                            Accept: "application/json; charset=utf-8"
+                        },
+                        url: 'assort_delete.php',
+                        method: 'post',
+                        data: {
+                            id: tr.id
+                        },
+                        success: (res) => {
+                            let data = JSON.parse(res);
+                            layer.alert(data.msg, {
+                                title: "提示"
+                            });
+                            if (data.code === 0) {
+                                setTimeout(() => {
+                                    obj.del();
+                                    layer.close(index);
+                                    window.location
+                                        .reload();
+                                }, 1000);
+                            }
+                        },
+                        error: (e) => {
+                            console.log('e', e)
+                        }
+                    })
                 })
-                return false; // 阻止默认 form 跳转
-            });
-        }
+            } else if (eventName == 'edit') {
+                //修改
+                layerAlert(layer, util, form, "编辑分类", 'assort_save.php', tr)
+            }
+        });
     });
-}
-
-layui.use(function() {
-    var $ = layui.$;
-    var layer = layui.layer;
-    var util = layui.util;
-    var form = layui.form;
-    // 事件
-    util.on('lay-on', {
-        'test-page-custom': function() {
-            layerAlert(layer, util, form)
-        }
-    });
-});
-
-layui.use('table', function() {
-    var $ = layui.$;
-    var layer = layui.layer;
-    var util = layui.util;
-    var form = layui.form;
-    var table = layui.table;
-    table.on('tool(test)', function(obj) {
-        var tr = obj.data;
-        let arr = Object.values(tr);
-        var eventName = obj.event;
-        if (eventName == 'del') {
-            //删除
-            layer.confirm("您确认删除吗？", function(index) {
-                obj.del();
-                layer.close(index);
-                // window.location.href = "assort_delete.php?id=" + arr[0];
-            })
-        } else if (eventName == 'edit') {
-            //修改
-            layerAlert(layer, util, form, "编辑分类", 'assort_save.php', tr)
-        }
-    });
-});
 </script>
