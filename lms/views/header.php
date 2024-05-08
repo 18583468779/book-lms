@@ -71,14 +71,12 @@
                         <a href="javascript:;">分类管理</a>
                         <dl class="layui-nav-child">
                             <dd><a href="assort_list.php">分类列表</a></dd>
-                            <dd><a href="javascript:;">新增分类</a></dd>
                         </dl>
                     </li>
                     <li class="layui-nav-item">
                         <a href="javascript:;">位置管理</a>
                         <dl class="layui-nav-child">
-                            <dd><a href="javascript:;">位置列表</a></dd>
-                            <dd><a href="javascript:;">新增位置</a></dd>
+                            <dd><a href="position_list.php">位置列表</a></dd>
                         </dl>
                     </li>
                     <li class="layui-nav-item">

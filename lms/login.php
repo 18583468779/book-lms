@@ -76,7 +76,7 @@
                 title: "提示"
             });
             setTimeout(() => {
-                window.location.href = './index.php';
+                window.location.href = '../lms/views/index.php';
             }, 1000);
         }
         layui.use(function() {
@@ -103,7 +103,7 @@
                         });
                         if (data.flag === 0) {
                             setTimeout(() => {
-                                window.location.href = '.views/index.php';
+                                window.location.href = '../views/index.php';
                             }, 1000);
                         }
                     },
