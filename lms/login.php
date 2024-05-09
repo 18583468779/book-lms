@@ -103,7 +103,7 @@
                         });
                         if (data.flag === 0) {
                             setTimeout(() => {
-                                window.location.href = '../views/index.php';
+                                window.location.href = '../lms/views/index.php';
                             }, 1000);
                         }
                     },

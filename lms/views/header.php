@@ -1,5 +1,9 @@
 <?php
+include('../db.php');
 
+use Database\DB;
+
+$db = new DB($config);
 ?>
 <!DOCTYPE html>
 <html>
@@ -61,8 +65,7 @@
                     <li class="layui-nav-item layui-nav-itemed">
                         <a class="" href="javascript:;">图书管理</a>
                         <dl class="layui-nav-child">
-                            <dd><a href="javascript:;">新增图书</a></dd>
-                            <dd><a href="javascript:;">图书列表</a></dd>
+                            <dd><a href="book_list.php">图书列表</a></dd>
                             <dd><a href="javascript:;">借阅管理</a></dd>
                             <dd><a href="javascript:;">损坏管理</a></dd>
                         </dl>
