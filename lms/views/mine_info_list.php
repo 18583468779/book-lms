@@ -22,6 +22,7 @@ include('header.php');
                                 <th lay-data="{field:'id', width:180}" rowspan="2">ID</th>
                                 <th lay-data="{field:'username'}" rowspan="2">用户名</th>
                                 <th lay-data="{field:'real_name'}" rowspan="2">真实姓名</th>
+                                <th lay-data="{field:'create_time'}" rowspan="2">创建时间</th>
                                 <th lay-data="{fixed: 'right', width: 160, align: 'center', toolbar: '#templet-demo-theads-tool'}"
                                     rowspan="2">操作</th>
                             </tr>
@@ -48,7 +49,7 @@ include('footer.php');
 function layerAlert(layer, util, form, title = "修改个人信息", url = 'mine_info_modify.php', data = {
     real_name: '',
     password: '',
-    confirmPassword: ''
+    confirmPassword: '',
 }) {
     // 封装弹框
     layer.open({
@@ -80,7 +81,7 @@ function layerAlert(layer, util, form, title = "修改个人信息", url = 'mine
                                             <div class="layui-input-prefix">
                                                 <i class="layui-icon layui-icon-password"></i>
                                             </div>
-                                            <input type="password" name="password" value="" lay-verify="required" placeholder="密码" autocomplete="off" class="layui-input" id="reg-password" lay-affix="eye">
+                                            <input type="password" name="password" value="" lay-verify="" placeholder="密码" autocomplete="off" class="layui-input" id="reg-password" lay-affix="eye">
                                         </div>
                                     </div>
                                         <div class="layui-form-item">
@@ -88,7 +89,7 @@ function layerAlert(layer, util, form, title = "修改个人信息", url = 'mine
                                                 <div class="layui-input-prefix">
                                                     <i class="layui-icon layui-icon-password"></i>
                                                 </div>
-                                                <input type="password" name="confirmPassword" value="" lay-verify="required|confirmPassword" placeholder="确认密码" autocomplete="off" class="layui-input" lay-affix="eye">
+                                                <input type="password" name="confirmPassword" value="" lay-verify="confirmPassword" placeholder="确认密码" autocomplete="off" class="layui-input" lay-affix="eye">
                                             </div>
                                         </div>
 

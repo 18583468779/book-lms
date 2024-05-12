@@ -14,9 +14,9 @@ try {
         $real_name = $_POST['real_name'];
     }
     $rows = $db->table('user')->field('password')->where("username = '{$username}'")->get();
-
+    $create_time = date("Y-m-d");
     if (empty($rows)) {
-        $db->table('user')->insert(["username" => $username, "password" => $password, "real_name" => $real_name]);
+        $db->table('user')->insert(["username" => $username, "password" => $password, "real_name" => $real_name, "create_time" => $create_time]);
         echo json_encode(['data' => [], 'flag' => 0, 'msg' => '恭喜你，注册成功！']);
     } else {
         echo json_encode(['data' => empty($rows), 'flag' => 1, 'msg' => '该账号已注册！']);
