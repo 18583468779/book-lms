@@ -59,6 +59,7 @@ include('footer.php');
         book_position: '',
         book_num: '',
     }) {
+
         // 封装弹框
         layer.open({
             type: 1,
@@ -85,58 +86,67 @@ include('footer.php');
                                     <div class="layui-form-item">
                                         <label class="layui-form-label">图书类型*</label>
                                         <div class="layui-input-block">
-                                            <select name="book_assort" lay-filter="" lay-verify="required" >
+                                            <select name="book_assort" lay-filter="" lay-verify="required" id="book_assort">
                                                 <option value=""></option>
-                                                <?php
-                                                $row = $db->table('assort')->get();
-                                                if ($row) :
-                                                    foreach ($row as $key => $val) :
-                                                ?>
-                                                        <option value="<?php echo $val['assort_name']; ?>"  ><?php echo $val['assort_name']; ?></option>
-                                                    <?php
-                                                    endforeach;
-                                                endif;
-                                                    ?>
-                                            </select>
-                                        </div>
-                                    </div> 
-                                    <div class="layui-form-item">
-                                        <label class="layui-form-label">图书位置*</label>
-                                        <div class="layui-input-block">
-                                            <select name="book_position" lay-filter="" lay-verify="required">
-                                                <option value=""></option>
-                                                <?php
-                                                $row = $db->table('position')->get();
-                                                if ($row) :
-                                                    foreach ($row as $key => $val) :
-                                                ?>
-                                                        <option value="<?php echo $val['position_name']; ?>" ><?php echo $val['position_name']; ?></option>
-                                                    <?php
-                                                    endforeach;
-                                                endif;
-                                                    ?>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="layui-form-item">
-                                        <div class="layui-inline">
-                                            <label class="layui-form-label">图书数量*</label>
-                                            <div class="layui-input-inline" style="width: 100px;">
-                                                <input type="number" name="book_num" placeholder="" autocomplete="off" class="layui-input" min="1" step="1" lay-affix="number" value="${data.book_num}">
-                                            </div>
-                                        </div>
-                                    </div>
-                                      <div class="layui-form-item">
-                                        <div class="layui-input-block">
-                                        <button type="submit" class="layui-btn" lay-submit lay-filter="submit_btn">立即提交</button>
-                                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    `,
+                                                </select>
+                                                </div>
+                                                </div>
+                                                <div class="layui-form-item">
+                                                    <label class="layui-form-label">图书位置*</label>
+                                                    <div class="layui-input-block">
+                                                        <select name="book_position" lay-filter="" lay-verify="required" id="book_position">
+                                                            <option value=""></option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="layui-form-item">
+                                                    <div class="layui-inline">
+                                                        <label class="layui-form-label">图书数量*</label>
+                                                        <div class="layui-input-inline" style="width: 100px;">
+                                                            <input type="number" name="book_num" placeholder="" autocomplete="off" class="layui-input" min="1" step="1"
+                                                                lay-affix="number" value="${data.book_num}">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="layui-form-item">
+                                                    <div class="layui-input-block">
+                                                        <button type="submit" class="layui-btn" lay-submit lay-filter="submit_btn">立即提交</button>
+                                                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                                                    </div>
+                                                </div>
+                                                </div>
+                                                </div>
+                                                </form>
+                                        `,
             success: function() {
+                // 设置下来选项的数据，为什么用js处理是因为方便，option默认值的处理
+                // 图书类型
+                let assortArr = <?php echo json_encode($db->table('assort')->get()); ?>;
+                assortArr.forEach(item => {
+                    let selected = data.book_assort === item.assort_name ? true : false;
+                    if (selected) {
+                        $("#book_assort").append(
+                            `<option value="${item.assort_name}" selected>${item.assort_name}</option>`
+                        )
+                    } else {
+                        $("#book_assort").append(
+                            `<option value="${item.assort_name}">${item.assort_name}</option>`)
+                    }
+                });
+                // 图书位置
+                let positionArr = <?php echo json_encode($db->table('position')->get()); ?>;
+                positionArr.forEach(item => {
+                    let selected = data.book_position === item.position_name ? true : false;
+                    if (selected) {
+                        $("#book_position").append(
+                            `<option value="${item.position_name}" selected>${item.position_name}</option>`
+                        )
+                    } else {
+                        $("#book_position").append(
+                            `<option value="${item.position_name}">${item.position_name}</option>`)
+                    }
+                });
+
                 // 对弹层中的表单进行初始化渲染
                 form.render();
                 // 表单提交事件
@@ -174,24 +184,23 @@ include('footer.php');
                 });
             }
         });
-    }
+    };
+
+
 
     layui.use(function() {
         var $ = layui.$;
         var layer = layui.layer;
         var util = layui.util;
         var form = layui.form;
-        console.log('1111')
-        // 事件
         util.on('lay-on', {
             'test-page-custom': function() {
-
                 layerAlert(layer, util, form)
             }
         });
     });
 
-    layui.use('table', function() {
+    layui.use('table', function(e) {
         var $ = layui.$;
         var layer = layui.layer;
         var util = layui.util;
@@ -204,8 +213,6 @@ include('footer.php');
             if (eventName == 'del') {
                 //删除
                 layer.confirm("您确认删除吗？", function(index) {
-
-
                     $.ajax({
                         headers: {
                             Accept: "application/json; charset=utf-8"
@@ -235,8 +242,10 @@ include('footer.php');
                     })
                 })
             } else if (eventName == 'edit') {
-                //修改
-                layerAlert(layer, util, form, "编辑分类", 'assort_save.php', tr)
+                layerAlert(layer, util, form, "编辑分类", 'assort_save.php', tr);
+
+
+
             }
         });
     });
