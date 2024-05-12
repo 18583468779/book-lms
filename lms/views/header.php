@@ -22,41 +22,25 @@ $db = new DB($config);
     <div class="layui-layout layui-layout-admin">
         <div class="layui-header">
             <div class="layui-logo layui-hide-xs layui-bg-black">图书管理系统</div>
-            <!-- 头部区域（可配合layui 已有的水平导航） -->
-            <!-- <ul class="layui-nav layui-layout-left">
-                <li class="layui-nav-item layui-show-xs-inline-block layui-hide-sm" lay-header-event="menuLeft">
-                    <i class="layui-icon layui-icon-spread-left"></i>
-                </li>
-                <li class="layui-nav-item layui-hide-xs"><a href="javascript:;">nav 1</a></li>
-                <li class="layui-nav-item layui-hide-xs"><a href="javascript:;">nav 2</a></li>
-                <li class="layui-nav-item layui-hide-xs"><a href="javascript:;">nav 3</a></li>
-                <li class="layui-nav-item">
-                    <a href="javascript:;">nav groups</a>
-                    <dl class="layui-nav-child">
-                        <dd><a href="javascript:;">menu 11</a></dd>
-                        <dd><a href="javascript:;">menu 22</a></dd>
-                        <dd><a href="javascript:;">menu 33</a></dd>
-                    </dl>
-                </li>
-            </ul> -->
+            <!-- 头部区域-->
+            <ul class="layui-nav layui-layout-left">
+                <li class="layui-nav-item layui-hide-xs"><a href="index.php">首页</a></li>
+            </ul>
             <ul class="layui-nav layui-layout-right">
-                <li class="layui-nav-item layui-hide layui-show-sm-inline-block">
+                <li class="layui-nav-item layui-hide-xs"><a href="../logout.php">退出登陆</a></li>
+                <li class="layui-nav-item layui-hide layui-show-md-inline-block">
                     <a href="javascript:;">
-                        <img src="//unpkg.com/outeres@0.0.10/img/layui/icon-v2.png" class="layui-nav-img">
-                        tester
+                        个人中心
                     </a>
                     <dl class="layui-nav-child">
-                        <dd><a href="javascript:;">Your Profile</a></dd>
-                        <dd><a href="javascript:;">Settings</a></dd>
-                        <dd><a href="javascript:;">Sign out</a></dd>
+                        <dd><a href="mine_info_list.php">个人信息</a></dd>
+                        <dd><a href="mine_borrow_new.php">借阅申请</a></dd>
+                        <dd><a href="mine_borrow_list.php">申请列表</a></dd>
+                        <dd><a href="mine_book_list.php">我的书籍</a></dd>
                     </dl>
-                </li>
-                <li class="layui-nav-item" lay-header-event="menuRight" lay-unselect>
-                    <a href="javascript:;">
-                        <i class="layui-icon layui-icon-more-vertical"></i>
-                    </a>
                 </li>
             </ul>
+
         </div>
         <div class="layui-side layui-bg-black">
             <div class="layui-side-scroll">
