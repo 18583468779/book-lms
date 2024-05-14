@@ -6,30 +6,28 @@ include('header.php');
         <h2>个人中心</h2>
         <div class="layui-tab layui-tab-brief">
             <ul class="layui-tab-title">
-                <li class="layui-this">个人信息管理</li>
-                <li>借阅申请</li>
-                <li>申请列表</li>
-                <li>我的书籍</li>
+                <li class="layui-this"><a href="mine_info_list.php">个人信息</a></li>
+                <li><a href="mine_borrow_new.php">借阅申请</a></li>
+                <li><a href="mine_borrow_list.php">申请列表</a></li>
+                <li><a href="mine_book_list.php">我的书籍</a></li>
             </ul>
         </div>
         <div class="layui-tab-content">
             <div class="layui-tab-item layui-show">
                 <div style="margin-top:30px">
-                    <table class="layui-table" lay-filter="test" lay-data="{url:'./mine_info_get.php'}"
-                        id="ID-table-demo-theads-1">
+                    <table class="layui-table" lay-filter="test" lay-data="{url:'./mine_info_get.php'}" id="ID-table-demo-theads-1">
                         <thead>
                             <tr>
                                 <th lay-data="{field:'id', width:180}" rowspan="2">ID</th>
                                 <th lay-data="{field:'username'}" rowspan="2">用户名</th>
                                 <th lay-data="{field:'real_name'}" rowspan="2">真实姓名</th>
                                 <th lay-data="{field:'create_time'}" rowspan="2">创建时间</th>
-                                <th lay-data="{fixed: 'right', width: 160, align: 'center', toolbar: '#templet-demo-theads-tool'}"
-                                    rowspan="2">操作</th>
+                                <th lay-data="{fixed: 'right', width: 160, align: 'center', toolbar: '#templet-demo-theads-tool'}" rowspan="2">操作</th>
                             </tr>
                             <script type="text/html" id="templet-demo-theads-tool">
-                            <div class="layui-clear-space">
-                                <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-                            </div>
+                                <div class="layui-clear-space">
+                                    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+                                </div>
                             </script>
                         </thead>
                     </table>
@@ -46,19 +44,22 @@ include('header.php');
 include('footer.php');
 ?>
 <script>
-function layerAlert(layer, util, form, title = "修改个人信息", url = 'mine_info_modify.php', data = {
-    real_name: '',
-    password: '',
-    confirmPassword: '',
-}) {
-    // 封装弹框
-    layer.open({
-        type: 1,
-        area: '350px',
-        resize: false,
-        shadeClose: true,
-        title,
-        content: `
+    function layerAlert(layer, util, form, title = "修改个人信息", url = 'mine_info_modify.php', data = {
+        real_name: '',
+        password: '',
+        confirmPassword: '',
+    }) {
+        if (data.real_name === null) {
+            data.real_name = '';
+        }
+        // 封装弹框
+        layer.open({
+            type: 1,
+            area: '350px',
+            resize: false,
+            shadeClose: true,
+            title,
+            content: `
                         <form class="layui-form" >
                             <div class="layui-form" lay-filter="filter-test-layer" style="margin: 16px;">
                                 <div class="demo-login-container">
@@ -103,70 +104,70 @@ function layerAlert(layer, util, form, title = "修改个人信息", url = 'mine
                             </div>
                         </form>
                     `,
-        success: function() {
-            // 对弹层中的表单进行初始化渲染
-            form.render();
-            form.verify({
-                // 确认密码
-                confirmPassword: function(value, item) {
-                    var passwordValue = $('#reg-password').val();
-                    if (value !== passwordValue) {
-                        return '两次密码输入不一致';
-                    }
-                }
-            });
-            // 表单提交事件
-            form.on('submit(submit_btn)', function(data) {
-                var field = data.field; // 获取表单字段值
-                // 此处可执行 Ajax 等操作
-                // …
-                if (title == '新增分类') {
-                    delete field['id'];
-                }
-                $.ajax({
-                    headers: {
-                        Accept: "application/json; charset=utf-8"
-                    },
-                    url,
-                    method: 'post',
-                    data: field,
-                    success: (res) => {
-                        let data = JSON.parse(res);
-                        layer.alert(data.msg, {
-                            title: "提示"
-                        });
-                        if (data.code === 0) {
-                            setTimeout(() => {
-                                window.location
-                                    .reload();
-                            }, 1000);
+            success: function() {
+                // 对弹层中的表单进行初始化渲染
+                form.render();
+                form.verify({
+                    // 确认密码
+                    confirmPassword: function(value, item) {
+                        var passwordValue = $('#reg-password').val();
+                        if (value !== passwordValue) {
+                            return '两次密码输入不一致';
                         }
-                    },
-                    error: (e) => {
-                        console.log('e', e)
                     }
-                })
-                return false; // 阻止默认 form 跳转
-            });
-        }
-    });
-}
+                });
+                // 表单提交事件
+                form.on('submit(submit_btn)', function(data) {
+                    var field = data.field; // 获取表单字段值
+                    // 此处可执行 Ajax 等操作
+                    // …
+                    if (title == '新增分类') {
+                        delete field['id'];
+                    }
+                    $.ajax({
+                        headers: {
+                            Accept: "application/json; charset=utf-8"
+                        },
+                        url,
+                        method: 'post',
+                        data: field,
+                        success: (res) => {
+                            let data = JSON.parse(res);
+                            layer.alert(data.msg, {
+                                title: "提示"
+                            });
+                            if (data.code === 0) {
+                                setTimeout(() => {
+                                    window.location
+                                        .reload();
+                                }, 1000);
+                            }
+                        },
+                        error: (e) => {
+                            console.log('e', e)
+                        }
+                    })
+                    return false; // 阻止默认 form 跳转
+                });
+            }
+        });
+    }
 
 
-layui.use('table', function() {
-    var $ = layui.$;
-    var layer = layui.layer;
-    var util = layui.util;
-    var form = layui.form;
-    var table = layui.table;
-    table.on('tool(test)', function(obj) {
-        var tr = obj.data;
-        let arr = Object.values(tr);
-        var eventName = obj.event;
-        if (eventName == 'edit') {
-            //修改
-            layerAlert(layer, util, form, "修改个人信息", 'mine_info_modify.php', tr)
-        }
+    layui.use('table', function() {
+        var $ = layui.$;
+        var layer = layui.layer;
+        var util = layui.util;
+        var form = layui.form;
+        var table = layui.table;
+        table.on('tool(test)', function(obj) {
+            var tr = obj.data;
+            let arr = Object.values(tr);
+            var eventName = obj.event;
+            if (eventName == 'edit') {
+                //修改
+                layerAlert(layer, util, form, "修改个人信息", 'mine_info_modify.php', tr)
+            }
+        });
     });
-});
 </script>
